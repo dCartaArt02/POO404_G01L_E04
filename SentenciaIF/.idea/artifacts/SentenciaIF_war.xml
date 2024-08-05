@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="SentenciaIF:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>SentenciaIF</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="SentenciaIF-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="SentenciaIF:war exploded" />
+    </root>
+  </artifact>
+</component>

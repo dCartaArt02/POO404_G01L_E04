@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="NuevoFor:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>NuevoFor</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="NuevoFor-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="NuevoFor:war exploded" />
+    </root>
+  </artifact>
+</component>
