@@ -5,11 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9bb2fddd-f2eb-41cb-823b-1da719d48081" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/sv/edu/udb/Persona.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/sv/edu/udb/Persona.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/sv/edu/udb/img/images.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/sv/edu/udb/img/png-transparent-master-of-business-administration-service-organization-sales-standing-man-service-insurance-necktie-thumbnail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/sv/edu/udb/form/RadioButton.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/sv/edu/udb/img/Firefox_logo,_2019.svg.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/sv/edu/udb/img/img1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/sv/edu/udb/img/img2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/sv/edu/udb/img/img3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/sv/edu/udb/util/RadioButton.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Guia_4/sv/edu/udb/Persona$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Guia_4/sv/edu/udb/Persona$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Guia_4/sv/edu/udb/Persona.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sv/edu/udb/Persona.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/sv/edu/udb/form/Persona.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sv/edu/udb/Persona.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sv/edu/udb/util/Persona.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +61,7 @@
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "Application.Main.executor": "Run",
     "Application.Persona.executor": "Run",
+    "Application.RadioButton.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH": "222",
     "git-widget-placeholder": "Ca241136__Guia__4",
@@ -62,6 +70,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/sv/edu/udb/form" />
       <recent name="$PROJECT_DIR$/src/sv/edu/udb/img" />
     </key>
   </component>

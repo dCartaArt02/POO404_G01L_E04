@@ -1,10 +1,9 @@
-package sv.edu.udb;
+package sv.edu.udb.util;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class Persona extends JFrame{
     private JPanel panel1;
@@ -46,6 +45,12 @@ public class Persona extends JFrame{
             btnlimpiar();
         }
     });
+    tbldatos.addComponentListener(new ComponentAdapter() {
+    });
+    tbldatos.addComponentListener(new ComponentAdapter() {
+    });
+    tbldatos.addContainerListener(new ContainerAdapter() {
+    });
 }
 private void btnlimpiar()
     {
@@ -75,7 +80,28 @@ private void   btnObtenerDatos()
                         id, nombres, edad, telefono, Sexo
                 };
         modelo.addRow(newRow);
+        tbldatos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+            }
+        });
     }
+
+    private void  tblObtenerDatos(MouseEvent e)
+    {
+        int fila = tbldatos.rowAtPoint(e.getPoint());
+        int columa = tbldatos.columnAtPoint(e.getPoint());
+        if ((fila > -1) && (columa > -1))
+        {
+            txtid.setText(modelo.getValueAt(fila,0).toString());
+            txtnombre.setText(modelo.getValueAt(fila,1).toString());
+            txtedad.setText(modelo.getValueAt(fila,2).toString());
+            txtTelefono.setText(modelo.getValueAt(fila, 3).toString());
+            cmbsexo.setSelectedItem(modelo.getValueAt(fila,4).toString());
+        }
+    }
+
 public static void main(String[]args)
 {
     JFrame frame = new Persona("Ingreso de datos");
@@ -84,4 +110,5 @@ public static void main(String[]args)
     private void createUIComponents() {
 
     }
+
 }
