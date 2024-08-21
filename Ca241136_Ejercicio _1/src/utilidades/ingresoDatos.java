@@ -40,9 +40,19 @@ public class ingresoDatos extends JFrame {
                     Fecha_nacimiento Calcu = new Fecha_nacimiento();
                     long edad = Calcu.calcularEdad(fechanacimientoCD);
                    
-                    
-                        JOptionPane.showMessageDialog(null, "Hola!  " + nombre + " Tienes la edad de! " + edad + " Años y sexo!  " + sexo + " Un Saludo! " +bici);
-                    
+
+                    if (edad >= 30) {
+                        if ("Masculino".equals(sexo)) {
+                            JOptionPane.showMessageDialog(null, "Hola! Sr " + nombre + " Tienes la edad de! " + edad + " Años y sexo!  " + sexo + " Un Saludo! ");
+
+                        } else if ("Femenino".equals(sexo)) {
+                            JOptionPane.showMessageDialog(null, "Hola! Sr " + nombre + " Tienes la edad de! " + edad + " Años y sexo!  " + sexo + " Un Saludo! ");
+                        }
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null, "Hola!  " + nombre + " Tienes la edad de! " + edad + " Años y sexo!  " + sexo + " Un Saludo! " +);
+                    }
 
                 }
                 catch (IllegalArgumentException ex)
