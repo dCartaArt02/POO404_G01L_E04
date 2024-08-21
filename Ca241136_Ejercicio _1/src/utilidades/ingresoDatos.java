@@ -25,7 +25,7 @@ public class ingresoDatos extends JFrame {
         this.setLocationRelativeTo(null);
         combosexo.addItem("Masculino");
         combosexo.addItem("Femenino");
-        
+        bisiesto anio = new bisiesto();
 
         saludarButton.addActionListener(new ActionListener() {
             @Override
@@ -39,20 +39,21 @@ public class ingresoDatos extends JFrame {
 
                     Fecha_nacimiento Calcu = new Fecha_nacimiento();
                     long edad = Calcu.calcularEdad(fechanacimientoCD);
-                   
+                    int anio = Calcu.obteneranio(fechanacimientoCD);
+                    boolean bici = bisiesto.bisiesto(anio);
+                    System.out.println("aa"+bici);
+                    String Saludo = "estimado";
+                        if (edad >= 30) {
+                            if ("Masculino".equals(sexo)) {
+                                Saludo = "Sr";
 
-                    if (edad >= 30) {
-                        if ("Masculino".equals(sexo)) {
-                            JOptionPane.showMessageDialog(null, "Hola! Sr " + nombre + " Tienes la edad de! " + edad + " Años y sexo!  " + sexo + " Un Saludo! ");
-
-                        } else if ("Femenino".equals(sexo)) {
-                            JOptionPane.showMessageDialog(null, "Hola! Sr " + nombre + " Tienes la edad de! " + edad + " Años y sexo!  " + sexo + " Un Saludo! ");
+                            } else if ("Femenino".equals(sexo)) {
+                                Saludo = "Sra";
+                            }
                         }
-                    }
-                    else
-                    {
-                        JOptionPane.showMessageDialog(null, "Hola!  " + nombre + " Tienes la edad de! " + edad + " Años y sexo!  " + sexo + " Un Saludo! " +);
-                    }
+                        JOptionPane.showMessageDialog(null, "Hola! "+ Saludo + nombre + " Tienes la edad de! " + edad + " Años y nacio en un año "  +(bici ? "biciesto" : "no biciesto"), "y su sexo es: "+ sexo +  "Un Saludo! ", JOptionPane.INFORMATION_MESSAGE);
+
+
 
                 }
                 catch (IllegalArgumentException ex)
@@ -68,6 +69,7 @@ public class ingresoDatos extends JFrame {
         public static void main (String[]args){
             JFrame frame = new ingresoDatos("Ingreso datos");
             frame.setVisible(true);
+
 
     }
 }

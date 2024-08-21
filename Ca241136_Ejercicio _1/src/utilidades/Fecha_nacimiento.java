@@ -17,16 +17,19 @@ public class Fecha_nacimiento {
 
                 throw new IllegalArgumentException("Formato de fecha incorrecto. Use dd/MM/yyyy.");
             }
+        }
 
-
-            public int obteneranio (String fechanacimiento)
+            public int obteneranio(String fechaNacimiento)
             {
                 try {
-                    LocalDate fecha
+                    LocalDate fecha = LocalDate.parse(fechaNacimiento, formatter);
+                    return fecha.getYear();
 
-                } catch ()
+                } catch (Exception e)
+                {
+                    throw new IllegalArgumentException("Formato de fecha incorrecto. Use dd/MM/yyyy.");
+                }
 
             }
-        }
 
 }
