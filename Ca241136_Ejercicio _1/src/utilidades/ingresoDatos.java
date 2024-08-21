@@ -3,7 +3,6 @@ package utilidades;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
 
 public class ingresoDatos extends JFrame {
 
@@ -15,13 +14,15 @@ public class ingresoDatos extends JFrame {
     private JTextField apellidofield;
     private JComboBox combosexo;
     private JButton saludarButton;
-    private JTextField DDMMAATextField;
+    private JTextField DDtextfield;
+    private JTextField MMTextfield;
+    private JTextField AAtexttield;
 
     public ingresoDatos(String title) {
         super(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(Ingresopnl);
-        this.setSize(600,500);
+        this.setSize(1000,500);
         this.setLocationRelativeTo(null);
         combosexo.addItem("Masculino");
         combosexo.addItem("Femenino");
@@ -33,13 +34,15 @@ public class ingresoDatos extends JFrame {
                 String nombre = nombrefield.getText();
                 String apellido = apellidofield.getText();
                 String sexo = (String) combosexo.getSelectedItem();
-                String fechanacimientoCD = DDMMAATextField.getText();
+                String Diacd = DDtextfield.getText();
+                String Mescd = MMTextfield.getText();
+                String Aniocd = AAtexttield.getText();
 
                 try {
 
                     Fecha_nacimiento Calcu = new Fecha_nacimiento();
-                    long edad = Calcu.calcularEdad(fechanacimientoCD);
-                    int anio = Calcu.obteneranio(fechanacimientoCD);
+                    long edad = Calcu.calcularEdad(Diacd + Mescd + Aniocd);
+                    int anio = Calcu.obteneranio(Diacd + Mescd + Aniocd);
                     boolean bici = bisiesto.bisiesto(anio);
                     System.out.println("aa"+bici);
                     String Saludo = "estimado";
@@ -51,9 +54,9 @@ public class ingresoDatos extends JFrame {
                                 Saludo = "Sra";
                             }
                         }
-                        JOptionPane.showMessageDialog(null, "Hola! "+ Saludo + nombre + " Tienes la edad de! " + edad + " Años y nacio en un año "  +(bici ? "biciesto" : "no biciesto"), "y su sexo es: "+ sexo +  "Un Saludo! ", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Hola! "+ Saludo +" "+ nombre + " Tienes la edad de! " + edad + " Años y nacio en un año "  +(bici ? "biciesto" : "no biciesto"), "y su sexo es: "+ sexo +  "Un Saludo! ", JOptionPane.INFORMATION_MESSAGE);
 
-
+                        
 
                 }
                 catch (IllegalArgumentException ex)
