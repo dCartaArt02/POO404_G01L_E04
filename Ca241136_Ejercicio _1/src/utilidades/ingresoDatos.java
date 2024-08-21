@@ -25,9 +25,17 @@ public class ingresoDatos extends JFrame {
         this.setLocationRelativeTo(null);
         combosexo.addItem("Masculino");
         combosexo.addItem("Femenino");
-        
+       
 
-        
+        saludarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nombre = nombrefield.getText();
+                String apellido = apellidofield.getText();
+                String sexo = (String) combosexo.getSelectedItem();
+                String fechanacimientoCD = DDMMAATextField.getText();
+
+              
     }
 
         public static void main (String[]args){
