@@ -7,9 +7,9 @@ import java.awt.event.ActionListener;
 
 public class Login extends JFrame {
     private String[][] cuentas = {
-            { "1", "400" },
-            { "2", "200" },
-            { "4", "500" }
+            { "1000001", "400" },
+            { "1000002", "200" },
+            { "1000004", "500" }
     };
     private int Cuentaseleccionada = -1;
 
