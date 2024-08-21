@@ -6,7 +6,7 @@ import java.time.temporal.ChronoUnit;
 public class Fecha_nacimiento {
     private String Fechacumple;
 
-        private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
 
         public long calcularEdad(String fechaNacimiento) {
             try {
