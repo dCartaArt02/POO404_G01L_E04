@@ -61,7 +61,7 @@ public class ingresoDatos extends JFrame {
                     }
 
 
-                            JOptionPane.showMessageDialog(null, "Hola! " + Saludo + " " + nombre + " Tienes la edad de! " + edad + " Años y nacio en un año " + (bici ? "biciesto" : "no biciesto") + " y su sexo es: " + sexo + " |Fecha: " + FechaAhora + " Un Saludo! ","prueba", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Hola! " + Saludo + " " + nombre + " Tienes la edad de! " + edad + " Años y nacio en un año " + (bici ? "biciesto" : "no biciesto") + " y su sexo es: " + sexo + " |Fecha: " + FechaAhora + " Un Saludo! ","Aplicacion", JOptionPane.INFORMATION_MESSAGE);
 
                     System.out.println(FechaAhora);
                 }
