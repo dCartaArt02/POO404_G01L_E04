@@ -37,27 +37,33 @@ public class ingresoDatos extends JFrame {
                 String Diacd = DDtextfield.getText();
                 String Mescd = MMTextfield.getText();
                 String Aniocd = AAtexttield.getText();
-
                 try {
-
+                    Fecha_nacimiento Zeller = new Fecha_nacimiento();
+                    String FechaAhora = Zeller.AlgoritmoZeller(Diacd+Mescd+Aniocd);
                     Fecha_nacimiento Calcu = new Fecha_nacimiento();
                     long edad = Calcu.calcularEdad(Diacd + Mescd + Aniocd);
                     int anio = Calcu.obteneranio(Diacd + Mescd + Aniocd);
                     boolean bici = bisiesto.bisiesto(anio);
                     System.out.println("aa"+bici);
                     String Saludo = "estimado";
-                        if (edad >= 30) {
-                            if ("Masculino".equals(sexo)) {
-                                Saludo = "Sr";
+                    if ("Femenino".equals(sexo))
+                    {
+                        Saludo = "estimada";
 
-                            } else if ("Femenino".equals(sexo)) {
-                                Saludo = "Sra";
-                            }
+                    }
+                    if (edad >= 30) {
+                        if ("Masculino".equals(sexo)) {
+                            Saludo = "Sr";
+
+                        } else if ("Femenino".equals(sexo)) {
+                            Saludo = "Sra";
                         }
-                        JOptionPane.showMessageDialog(null, "Hola! "+ Saludo +" "+ nombre + " Tienes la edad de! " + edad + " Años y nacio en un año "  +(bici ? "biciesto" : "no biciesto"), "y su sexo es: "+ sexo +  "Un Saludo! ", JOptionPane.INFORMATION_MESSAGE);
+                    }
 
-                        
 
+                            JOptionPane.showMessageDialog(null, "Hola! " + Saludo + " " + nombre + " Tienes la edad de! " + edad + " Años y nacio en un año " + (bici ? "biciesto" : "no biciesto") + " y su sexo es: " + sexo + " |Fecha: " + FechaAhora + " Un Saludo! ","Aplicacion", JOptionPane.INFORMATION_MESSAGE);
+
+                    System.out.println(FechaAhora);
                 }
                 catch (IllegalArgumentException ex)
                 {
@@ -68,10 +74,10 @@ public class ingresoDatos extends JFrame {
             }
         });
     }
-
         public static void main (String[]args){
             JFrame frame = new ingresoDatos("Ingreso datos");
             frame.setVisible(true);
+
 
 
     }
