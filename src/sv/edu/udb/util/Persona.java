@@ -1,5 +1,9 @@
 package sv.edu.udb.util;
 
+import sv.edu.udb.datos.PersonaDatos;
+import  sv.edu.udb.beans.PersonaBeans;
+import sv.edu.udb.datos.OcupacionesDatos;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -15,7 +19,13 @@ public class Persona extends JFrame{
     private JButton limpiarButton;
     private JButton obtenerDatosButton;
     private JTable tbldatos;
+    private JTextField FechaField;
+    private JComboBox cmbOcupacion;
+    private JButton eliminarButton;
     DefaultTableModel modelo=null;
+    PersonaBeans personaBeans = null;
+    PersonaDatos personaDatos = new PersonaDatos();
+    OcupacionesDatos OcupacionesDatos = new OcupacionesDatos();
 
     public Persona(String title)
 {
@@ -31,7 +41,9 @@ public class Persona extends JFrame{
     };
     modelo = new DefaultTableModel(data,colums);
     tbldatos.setModel(modelo);
-
+    modelo=personaDatos.selectPersona();
+    tbldatos.setModel(modelo);
+    cmbOcupacion.setModel(OcupacionesDatos.selectOcupaciones());
     obtenerDatosButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -51,6 +63,19 @@ public class Persona extends JFrame{
     });
     tbldatos.addContainerListener(new ContainerAdapter() {
     });
+    eliminarButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            btnEliminarDatos();
+        }
+    });
+}
+public void btnEliminarDatos()
+{
+    personaDatos.delete(Integer.parseInt(txtid.getText()));
+    btnlimpiar();
+    modelo = personaDatos.selectPersona();
+    tbldatos.setModel(modelo);
 }
 private void btnlimpiar()
     {
@@ -59,21 +84,41 @@ private void btnlimpiar()
         txtedad.setText("");
         txtTelefono.setText("");
         cmbsexo.setSelectedIndex(0);
+        cmbOcupacion.setSelectedIndex(0);
+        FechaField.setText("");
+        obtenerDatosButton.setText("Guardar");
     }
 private void   btnObtenerDatos()
     {
-        String id;
+       int id;
         String nombres;
-        String edad;
+        int edad;
         String telefono;
         String Sexo;
-
-        id = txtid.getText();
+        int iDOcupacion;
+        String fechaNacimiento;
+        if (txtid.getText().isEmpty())
+        {
+            id = 0;
+        }else
+        {
+            id = Integer.parseInt(txtid.getText());
+        }
         nombres = txtnombre.getText();
-        edad = txtedad.getText();
+        edad = Integer.parseInt(txtedad.getText());
         telefono = txtTelefono.getText();
-        Sexo = cmbsexo.getActionCommand();
-
+        Sexo = cmbsexo.getSelectedItem().toString();
+        iDOcupacion = OcupacionesDatos.getIdOcupacion(cmbOcupacion.getSelectedItem().toString());
+        fechaNacimiento = FechaField.getText();
+        personaBeans = new PersonaBeans(id,nombres,edad,telefono,Sexo,iDOcupacion,fechaNacimiento);
+        if (obtenerDatosButton.getText().equals("Guardar"))
+        {
+            personaDatos.insert(personaBeans);
+        } else if (obtenerDatosButton.getText().equals("editar")) {
+            personaDatos.update(personaBeans);
+        }
+        modelo=personaDatos.selectPersona();
+        tbldatos.setModel(modelo);
         JOptionPane.showMessageDialog(null,"Datos Obtenidos: \n ID " +id+ "\n nombres: " +nombres+ "\n Edad: " +edad+ " \n Telefono: "+telefono+ "\n Sexo " +Sexo);
         Object[] newRow =
                 {
@@ -99,6 +144,9 @@ private void   btnObtenerDatos()
             txtedad.setText(modelo.getValueAt(fila,2).toString());
             txtTelefono.setText(modelo.getValueAt(fila, 3).toString());
             cmbsexo.setSelectedItem(modelo.getValueAt(fila,4).toString());
+            cmbOcupacion.setSelectedItem(modelo.getValueAt(fila,5).toString());
+            FechaField.setText(modelo.getValueAt(fila,6).toString());
+            obtenerDatosButton.setText("Editar");
         }
     }
 

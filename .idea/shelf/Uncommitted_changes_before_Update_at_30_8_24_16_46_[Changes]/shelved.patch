@@ -1,0 +1,296 @@
+Index: src/sv/edu/udb/util/Persona.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package sv.edu.udb.util;\n\nimport javax.swing.*;\nimport javax.swing.table.DefaultTableModel;\nimport java.awt.*;\nimport java.awt.event.*;\n\npublic class Persona extends JFrame{\n    private JPanel panel1;\n    private JTextField txtid;\n    private JTextField txtnombre;\n    private JTextField txtedad;\n    private JTextField txtTelefono;\n    private JComboBox cmbsexo;\n    private JButton limpiarButton;\n    private JButton obtenerDatosButton;\n    private JTable tbldatos;\n    DefaultTableModel modelo=null;\n\n    public Persona(String title)\n{\n    super   (title);\n    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n    this.setContentPane(panel1);\n    this.setMinimumSize(new Dimension (600,500));\n    this.setLocationRelativeTo(getParent());\n    Object [][] data = null;\n    String[] colums =\n    {\n        \"id\", \"Nombres\", \"Edad\",\"Telefono\",\"Sexo\"\n    };\n    modelo = new DefaultTableModel(data,colums);\n    tbldatos.setModel(modelo);\n\n    obtenerDatosButton.addActionListener(new ActionListener() {\n        @Override\n        public void actionPerformed(ActionEvent e) {\n            btnObtenerDatos();\n\n        }\n    });\n    limpiarButton.addActionListener(new ActionListener() {\n        @Override\n        public void actionPerformed(ActionEvent e) {\n            btnlimpiar();\n        }\n    });\n    tbldatos.addComponentListener(new ComponentAdapter() {\n    });\n    tbldatos.addComponentListener(new ComponentAdapter() {\n    });\n    tbldatos.addContainerListener(new ContainerAdapter() {\n    });\n}\nprivate void btnlimpiar()\n    {\n        txtid.setText(\"\");\n        txtnombre.setText(\"\");\n        txtedad.setText(\"\");\n        txtTelefono.setText(\"\");\n        cmbsexo.setSelectedIndex(0);\n    }\nprivate void   btnObtenerDatos()\n    {\n        String id;\n        String nombres;\n        String edad;\n        String telefono;\n        String Sexo;\n\n        id = txtid.getText();\n        nombres = txtnombre.getText();\n        edad = txtedad.getText();\n        telefono = txtTelefono.getText();\n        Sexo = cmbsexo.getActionCommand();\n\n        JOptionPane.showMessageDialog(null,\"Datos Obtenidos: \\n ID \" +id+ \"\\n nombres: \" +nombres+ \"\\n Edad: \" +edad+ \" \\n Telefono: \"+telefono+ \"\\n Sexo \" +Sexo);\n        Object[] newRow =\n                {\n                        id, nombres, edad, telefono, Sexo\n                };\n        modelo.addRow(newRow);\n        tbldatos.addMouseListener(new MouseAdapter() {\n            @Override\n            public void mouseClicked(MouseEvent e) {\n                super.mouseClicked(e);\n            }\n        });\n    }\n\n    private void  tblObtenerDatos(MouseEvent e)\n    {\n        int fila = tbldatos.rowAtPoint(e.getPoint());\n        int columa = tbldatos.columnAtPoint(e.getPoint());\n        if ((fila > -1) && (columa > -1))\n        {\n            txtid.setText(modelo.getValueAt(fila,0).toString());\n            txtnombre.setText(modelo.getValueAt(fila,1).toString());\n            txtedad.setText(modelo.getValueAt(fila,2).toString());\n            txtTelefono.setText(modelo.getValueAt(fila, 3).toString());\n            cmbsexo.setSelectedItem(modelo.getValueAt(fila,4).toString());\n        }\n    }\n\npublic static void main(String[]args)\n{\n    JFrame frame = new Persona(\"Ingreso de datos\");\n    frame.setVisible(true);\n}\n    private void createUIComponents() {\n\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/sv/edu/udb/util/Persona.java b/src/sv/edu/udb/util/Persona.java
+--- a/src/sv/edu/udb/util/Persona.java	(revision 3fbbc76e4020c33571936edb83bcd86a502c4c0f)
++++ b/src/sv/edu/udb/util/Persona.java	(date 1725057608097)
+@@ -1,5 +1,9 @@
+ package sv.edu.udb.util;
+ 
++import sv.edu.udb.datos.PersonaDatos;
++import  sv.edu.udb.beans.PersonaBeans;
++import sv.edu.udb.datos.OcupacionesDatos;
++
+ import javax.swing.*;
+ import javax.swing.table.DefaultTableModel;
+ import java.awt.*;
+@@ -15,7 +19,13 @@
+     private JButton limpiarButton;
+     private JButton obtenerDatosButton;
+     private JTable tbldatos;
++    private JTextField FechaField;
++    private JComboBox cmbOcupacion;
++    private JButton eliminarButton;
+     DefaultTableModel modelo=null;
++    PersonaBeans personaBeans = null;
++    PersonaDatos personaDatos = new PersonaDatos();
++    OcupacionesDatos OcupacionesDatos = new OcupacionesDatos();
+ 
+     public Persona(String title)
+ {
+@@ -31,7 +41,9 @@
+     };
+     modelo = new DefaultTableModel(data,colums);
+     tbldatos.setModel(modelo);
+-
++    modelo=personaDatos.selectPersona();
++    tbldatos.setModel(modelo);
++    cmbOcupacion.setModel(OcupacionesDatos.selectOcupaciones());
+     obtenerDatosButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+@@ -51,6 +63,19 @@
+     });
+     tbldatos.addContainerListener(new ContainerAdapter() {
+     });
++    eliminarButton.addActionListener(new ActionListener() {
++        @Override
++        public void actionPerformed(ActionEvent e) {
++            btnEliminarDatos();
++        }
++    });
++}
++public void btnEliminarDatos()
++{
++    personaDatos.delete(Integer.parseInt(txtid.getText()));
++    btnlimpiar();
++    modelo = personaDatos.selectPersona();
++    tbldatos.setModel(modelo);
+ }
+ private void btnlimpiar()
+     {
+@@ -59,21 +84,41 @@
+         txtedad.setText("");
+         txtTelefono.setText("");
+         cmbsexo.setSelectedIndex(0);
++        cmbOcupacion.setSelectedIndex(0);
++        FechaField.setText("");
++        obtenerDatosButton.setText("Guardar");
+     }
+ private void   btnObtenerDatos()
+     {
+-        String id;
++       int id;
+         String nombres;
+-        String edad;
++        int edad;
+         String telefono;
+         String Sexo;
+-
+-        id = txtid.getText();
++        int iDOcupacion;
++        String fechaNacimiento;
++        if (txtid.getText().isEmpty())
++        {
++            id = 0;
++        }else
++        {
++            id = Integer.parseInt(txtid.getText());
++        }
+         nombres = txtnombre.getText();
+-        edad = txtedad.getText();
++        edad = Integer.parseInt(txtedad.getText());
+         telefono = txtTelefono.getText();
+-        Sexo = cmbsexo.getActionCommand();
+-
++        Sexo = cmbsexo.getSelectedItem().toString();
++        iDOcupacion = OcupacionesDatos.getIdOcupacion(cmbOcupacion.getSelectedItem().toString());
++        fechaNacimiento = FechaField.getText();
++        personaBeans = new PersonaBeans(id,nombres,edad,telefono,Sexo,iDOcupacion,fechaNacimiento);
++        if (obtenerDatosButton.getText().equals("Guardar"))
++        {
++            personaDatos.insert(personaBeans);
++        } else if (obtenerDatosButton.getText().equals("editar")) {
++            personaDatos.update(personaBeans);
++        }
++        modelo=personaDatos.selectPersona();
++        tbldatos.setModel(modelo);
+         JOptionPane.showMessageDialog(null,"Datos Obtenidos: \n ID " +id+ "\n nombres: " +nombres+ "\n Edad: " +edad+ " \n Telefono: "+telefono+ "\n Sexo " +Sexo);
+         Object[] newRow =
+                 {
+@@ -99,6 +144,9 @@
+             txtedad.setText(modelo.getValueAt(fila,2).toString());
+             txtTelefono.setText(modelo.getValueAt(fila, 3).toString());
+             cmbsexo.setSelectedItem(modelo.getValueAt(fila,4).toString());
++            cmbOcupacion.setSelectedItem(modelo.getValueAt(fila,5).toString());
++            FechaField.setText(modelo.getValueAt(fila,6).toString());
++            obtenerDatosButton.setText("Editar");
+         }
+     }
+ 
+Index: src/sv/edu/udb/form/Persona.form
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<form xmlns=\"http://www.intellij.com/uidesigner/form/\" version=\"1\" bind-to-class=\"sv.edu.udb.util.Persona\">\n  <grid id=\"27dc6\" binding=\"panel1\" default-binding=\"true\" layout-manager=\"GridLayoutManager\" row-count=\"9\" column-count=\"3\" same-size-horizontally=\"false\" same-size-vertically=\"false\" hgap=\"-1\" vgap=\"-1\">\n    <margin top=\"0\" left=\"0\" bottom=\"0\" right=\"0\"/>\n    <constraints>\n      <xy x=\"20\" y=\"20\" width=\"605\" height=\"649\"/>\n    </constraints>\n    <properties/>\n    <border type=\"none\"/>\n    <children>\n      <component id=\"551c4\" class=\"javax.swing.JLabel\">\n        <constraints>\n          <grid row=\"0\" column=\"0\" row-span=\"1\" col-span=\"2\" vsize-policy=\"0\" hsize-policy=\"0\" anchor=\"8\" fill=\"0\" indent=\"0\" use-parent-layout=\"false\"/>\n        </constraints>\n        <properties>\n          <icon value=\"sv/edu/udb/img/images.jpg\"/>\n          <text value=\"\"/>\n        </properties>\n      </component>\n      <component id=\"fe3b1\" class=\"javax.swing.JLabel\">\n        <constraints>\n          <grid row=\"0\" column=\"2\" row-span=\"1\" col-span=\"1\" vsize-policy=\"0\" hsize-policy=\"0\" anchor=\"8\" fill=\"0\" indent=\"0\" use-parent-layout=\"false\"/>\n        </constraints>\n        <properties>\n          <font name=\"Nimbus Roman\" size=\"36\" style=\"1\"/>\n          <text value=\"Datos Persona\"/>\n        </properties>\n      </component>\n      <component id=\"1598d\" class=\"javax.swing.JLabel\">\n        <constraints>\n          <grid row=\"1\" column=\"0\" row-span=\"1\" col-span=\"1\" vsize-policy=\"0\" hsize-policy=\"0\" anchor=\"8\" fill=\"0\" indent=\"0\" use-parent-layout=\"false\"/>\n        </constraints>\n        <properties>\n          <font name=\"Nimbus Roman\" size=\"16\" style=\"1\"/>\n          <text value=\"ID:\"/>\n        </properties>\n      </component>\n      <component id=\"91746\" class=\"javax.swing.JLabel\">\n        <constraints>\n          <grid row=\"2\" column=\"0\" row-span=\"1\" col-span=\"1\" vsize-policy=\"0\" hsize-policy=\"0\" anchor=\"8\" fill=\"0\" indent=\"0\" use-parent-layout=\"false\"/>\n        </constraints>\n        <properties>\n          <font name=\"Nimbus Roman\" size=\"16\" style=\"1\"/>\n          <text value=\"Ingrese nombre:\"/>\n        </properties>\n      </component>\n      <component id=\"72e0c\" class=\"javax.swing.JLabel\">\n        <constraints>\n          <grid row=\"3\" column=\"0\" row-span=\"1\" col-span=\"1\" vsize-policy=\"0\" hsize-policy=\"0\" anchor=\"8\" fill=\"0\" indent=\"0\" use-parent-layout=\"false\"/>\n        </constraints>\n        <properties>\n          <font name=\"Nimbus Roman\" size=\"16\" style=\"1\"/>\n          <text value=\"Ingrese su edad:\"/>\n        </properties>\n      </component>\n      <component id=\"1ceef\" class=\"javax.swing.JLabel\">\n        <constraints>\n          <grid row=\"4\" column=\"0\" row-span=\"1\" col-span=\"1\" vsize-policy=\"0\" hsize-policy=\"0\" anchor=\"8\" fill=\"0\" indent=\"0\" use-parent-layout=\"false\"/>\n        </constraints>\n        <properties>\n          <font name=\"Nimbus Roman\" size=\"16\" style=\"1\"/>\n          <text value=\"ingrese su telefono:\"/>\n        </properties>\n      </component>\n      <component id=\"9a868\" class=\"javax.swing.JLabel\">\n        <constraints>\n          <grid row=\"5\" column=\"0\" row-span=\"1\" col-span=\"1\" vsize-policy=\"0\" hsize-policy=\"0\" anchor=\"8\" fill=\"0\" indent=\"0\" use-parent-layout=\"false\"/>\n        </constraints>\n        <properties>\n          <font name=\"Nimbus Roman\" size=\"16\" style=\"1\"/>\n          <text value=\"Seleccione su sexo:\"/>\n        </properties>\n      </component>\n      <component id=\"8de13\" class=\"javax.swing.JLabel\">\n        <constraints>\n          <grid row=\"6\" column=\"0\" row-span=\"2\" col-span=\"1\" vsize-policy=\"0\" hsize-policy=\"0\" anchor=\"8\" fill=\"0\" indent=\"0\" use-parent-layout=\"false\"/>\n        </constraints>\n        <properties>\n          <text value=\"\"/>\n        </properties>\n      </component>\n      <component id=\"3c7f3\" class=\"javax.swing.JTextField\" binding=\"txtid\">\n        <constraints>\n          <grid row=\"1\" column=\"2\" row-span=\"1\" col-span=\"1\" vsize-policy=\"0\" hsize-policy=\"6\" anchor=\"8\" fill=\"1\" indent=\"0\" use-parent-layout=\"false\">\n            <preferred-size width=\"150\" height=\"-1\"/>\n          </grid>\n        </constraints>\n        <properties/>\n      </component>\n      <component id=\"cc166\" class=\"javax.swing.JTextField\" binding=\"txtnombre\">\n        <constraints>\n          <grid row=\"2\" column=\"2\" row-span=\"1\" col-span=\"1\" vsize-policy=\"0\" hsize-policy=\"6\" anchor=\"8\" fill=\"1\" indent=\"0\" use-parent-layout=\"false\">\n            <preferred-size width=\"150\" height=\"-1\"/>\n          </grid>\n        </constraints>\n        <properties/>\n      </component>\n      <component id=\"fa935\" class=\"javax.swing.JTextField\" binding=\"txtedad\">\n        <constraints>\n          <grid row=\"3\" column=\"2\" row-span=\"1\" col-span=\"1\" vsize-policy=\"0\" hsize-policy=\"6\" anchor=\"8\" fill=\"1\" indent=\"0\" use-parent-layout=\"false\">\n            <preferred-size width=\"150\" height=\"-1\"/>\n          </grid>\n        </constraints>\n        <properties/>\n      </component>\n      <component id=\"4ec4c\" class=\"javax.swing.JTextField\" binding=\"txtTelefono\">\n        <constraints>\n          <grid row=\"4\" column=\"2\" row-span=\"1\" col-span=\"1\" vsize-policy=\"0\" hsize-policy=\"6\" anchor=\"8\" fill=\"1\" indent=\"0\" use-parent-layout=\"false\">\n            <preferred-size width=\"150\" height=\"-1\"/>\n          </grid>\n        </constraints>\n        <properties/>\n      </component>\n      <component id=\"d4c\" class=\"javax.swing.JComboBox\" binding=\"cmbsexo\">\n        <constraints>\n          <grid row=\"5\" column=\"2\" row-span=\"1\" col-span=\"1\" vsize-policy=\"0\" hsize-policy=\"2\" anchor=\"8\" fill=\"1\" indent=\"0\" use-parent-layout=\"false\"/>\n        </constraints>\n        <properties>\n          <font name=\"Nimbus Roman\" size=\"16\" style=\"1\"/>\n          <model>\n            <item value=\"Masculino\"/>\n            <item value=\"Femenino\"/>\n          </model>\n        </properties>\n      </component>\n      <component id=\"2ff24\" class=\"javax.swing.JButton\" binding=\"limpiarButton\" default-binding=\"true\">\n        <constraints>\n          <grid row=\"7\" column=\"2\" row-span=\"1\" col-span=\"1\" vsize-policy=\"0\" hsize-policy=\"3\" anchor=\"0\" fill=\"1\" indent=\"0\" use-parent-layout=\"false\"/>\n        </constraints>\n        <properties>\n          <font name=\"Nimbus Roman\" size=\"16\" style=\"1\"/>\n          <text value=\"Limpiar \"/>\n        </properties>\n      </component>\n      <component id=\"aac4d\" class=\"javax.swing.JButton\" binding=\"obtenerDatosButton\" default-binding=\"true\">\n        <constraints>\n          <grid row=\"6\" column=\"2\" row-span=\"1\" col-span=\"1\" vsize-policy=\"0\" hsize-policy=\"3\" anchor=\"0\" fill=\"1\" indent=\"0\" use-parent-layout=\"false\"/>\n        </constraints>\n        <properties>\n          <font name=\"Nimbus Roman\" size=\"16\" style=\"1\"/>\n          <text value=\"Obtener Datos\"/>\n        </properties>\n      </component>\n      <scrollpane id=\"3bb5d\">\n        <constraints>\n          <grid row=\"8\" column=\"2\" row-span=\"1\" col-span=\"1\" vsize-policy=\"7\" hsize-policy=\"7\" anchor=\"0\" fill=\"3\" indent=\"0\" use-parent-layout=\"false\"/>\n        </constraints>\n        <properties/>\n        <border type=\"none\"/>\n        <children>\n          <component id=\"ab4c2\" class=\"javax.swing.JTable\" binding=\"tbldatos\">\n            <constraints/>\n            <properties/>\n          </component>\n        </children>\n      </scrollpane>\n    </children>\n  </grid>\n</form>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/sv/edu/udb/form/Persona.form b/src/sv/edu/udb/form/Persona.form
+--- a/src/sv/edu/udb/form/Persona.form	(revision 3fbbc76e4020c33571936edb83bcd86a502c4c0f)
++++ b/src/sv/edu/udb/form/Persona.form	(date 1725057482442)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="sv.edu.udb.util.Persona">
+-  <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="GridLayoutManager" row-count="9" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
++  <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="GridLayoutManager" row-count="12" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+     <margin top="0" left="0" bottom="0" right="0"/>
+     <constraints>
+       <xy x="20" y="20" width="605" height="649"/>
+@@ -73,7 +73,7 @@
+       </component>
+       <component id="8de13" class="javax.swing.JLabel">
+         <constraints>
+-          <grid row="6" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
++          <grid row="8" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+         </constraints>
+         <properties>
+           <text value=""/>
+@@ -125,7 +125,7 @@
+       </component>
+       <component id="2ff24" class="javax.swing.JButton" binding="limpiarButton" default-binding="true">
+         <constraints>
+-          <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
++          <grid row="9" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+         </constraints>
+         <properties>
+           <font name="Nimbus Roman" size="16" style="1"/>
+@@ -134,7 +134,7 @@
+       </component>
+       <component id="aac4d" class="javax.swing.JButton" binding="obtenerDatosButton" default-binding="true">
+         <constraints>
+-          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
++          <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+         </constraints>
+         <properties>
+           <font name="Nimbus Roman" size="16" style="1"/>
+@@ -143,7 +143,7 @@
+       </component>
+       <scrollpane id="3bb5d">
+         <constraints>
+-          <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
++          <grid row="11" column="2" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+         </constraints>
+         <properties/>
+         <border type="none"/>
+@@ -154,6 +154,47 @@
+           </component>
+         </children>
+       </scrollpane>
++      <component id="fffe2" class="javax.swing.JTextField" binding="FechaField">
++        <constraints>
++          <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
++            <preferred-size width="150" height="-1"/>
++          </grid>
++        </constraints>
++        <properties/>
++      </component>
++      <component id="aee95" class="javax.swing.JLabel">
++        <constraints>
++          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
++        </constraints>
++        <properties>
++          <font name="Liberation Serif" size="16" style="1"/>
++          <text value="Seleccione su occupacion"/>
++        </properties>
++      </component>
++      <component id="df5ba" class="javax.swing.JLabel">
++        <constraints>
++          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
++        </constraints>
++        <properties>
++          <enabled value="true"/>
++          <font name="Nimbus Roman" size="14" style="1"/>
++          <text value="Ingrese su fecha de nacimiento"/>
++        </properties>
++      </component>
++      <component id="d3dc2" class="javax.swing.JComboBox" binding="cmbOcupacion">
++        <constraints>
++          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
++        </constraints>
++        <properties/>
++      </component>
++      <component id="affc9" class="javax.swing.JButton" binding="eliminarButton" default-binding="true">
++        <constraints>
++          <grid row="10" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
++        </constraints>
++        <properties>
++          <text value="Eliminar"/>
++        </properties>
++      </component>
+     </children>
+   </grid>
+ </form>
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"9bb2fddd-f2eb-41cb-823b-1da719d48081\" name=\"Changes\" comment=\"\">\n      <change afterPath=\"$PROJECT_DIR$/src/sv/edu/udb/form/RadioButton.form\" afterDir=\"false\" />\n      <change afterPath=\"$PROJECT_DIR$/src/sv/edu/udb/img/Firefox_logo,_2019.svg.png\" afterDir=\"false\" />\n      <change afterPath=\"$PROJECT_DIR$/src/sv/edu/udb/img/img1.png\" afterDir=\"false\" />\n      <change afterPath=\"$PROJECT_DIR$/src/sv/edu/udb/img/img2.png\" afterDir=\"false\" />\n      <change afterPath=\"$PROJECT_DIR$/src/sv/edu/udb/img/img3.png\" afterDir=\"false\" />\n      <change afterPath=\"$PROJECT_DIR$/src/sv/edu/udb/util/RadioButton.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/out/production/Guia_4/sv/edu/udb/Persona$1.class\" beforeDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/out/production/Guia_4/sv/edu/udb/Persona$2.class\" beforeDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/out/production/Guia_4/sv/edu/udb/Persona.class\" beforeDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/sv/edu/udb/Persona.form\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/sv/edu/udb/form/Persona.form\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/sv/edu/udb/Persona.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/sv/edu/udb/util/Persona.java\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"Class\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"GitHubPullRequestSearchHistory\"><![CDATA[{\n  \"lastFilter\": {\n    \"state\": \"OPEN\",\n    \"assignee\": \"dCartaArt02\"\n  }\n}]]></component>\n  <component name=\"GithubPullRequestsUISettings\"><![CDATA[{\n  \"selectedUrlAndAccountId\": {\n    \"url\": \"https://github.com/dCartaArt02/POO_G01L_E04.git\",\n    \"accountId\": \"e2bb6b7e-bbb1-403a-8ee7-fc300cad21f9\"\n  }\n}]]></component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;associatedIndex&quot;: 1\n}</component>\n  <component name=\"ProjectId\" id=\"2jw3V6bdZxxaHeS5zPpXJRH1HX9\" />\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\n  </component>\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\"><![CDATA[{\n  \"keyToString\": {\n    \"ASKED_ADD_EXTERNAL_FILES\": \"true\",\n    \"Application.Main.executor\": \"Run\",\n    \"Application.Persona.executor\": \"Run\",\n    \"Application.RadioButton.executor\": \"Run\",\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\n    \"UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH\": \"222\",\n    \"git-widget-placeholder\": \"Ca241136__Guia__4\",\n    \"kotlin-language-version-configured\": \"true\"\n  }\n}]]></component>\n  <component name=\"RecentsManager\">\n    <key name=\"MoveFile.RECENT_KEYS\">\n      <recent name=\"$PROJECT_DIR$/src/sv/edu/udb/form\" />\n      <recent name=\"$PROJECT_DIR$/src/sv/edu/udb/img\" />\n    </key>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"9bb2fddd-f2eb-41cb-823b-1da719d48081\" name=\"Changes\" comment=\"\" />\n      <created>1722284334382</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1722284334382</updated>\n    </task>\n    <servers />\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <option name=\"ADD_EXTERNAL_FILES_SILENTLY\" value=\"true\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 3fbbc76e4020c33571936edb83bcd86a502c4c0f)
++++ b/.idea/workspace.xml	(date 1724214371811)
+@@ -5,18 +5,7 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="9bb2fddd-f2eb-41cb-823b-1da719d48081" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/src/sv/edu/udb/form/RadioButton.form" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/sv/edu/udb/img/Firefox_logo,_2019.svg.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/sv/edu/udb/img/img1.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/sv/edu/udb/img/img2.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/sv/edu/udb/img/img3.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/sv/edu/udb/util/RadioButton.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/out/production/Guia_4/sv/edu/udb/Persona$1.class" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/out/production/Guia_4/sv/edu/udb/Persona$2.class" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/out/production/Guia_4/sv/edu/udb/Persona.class" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/sv/edu/udb/Persona.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/sv/edu/udb/form/Persona.form" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/sv/edu/udb/Persona.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sv/edu/udb/util/Persona.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -33,18 +22,18 @@
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+-  "lastFilter": {
+-    "state": "OPEN",
+-    "assignee": "dCartaArt02"
++  <component name="GitHubPullRequestSearchHistory">{
++  &quot;lastFilter&quot;: {
++    &quot;state&quot;: &quot;OPEN&quot;,
++    &quot;assignee&quot;: &quot;dCartaArt02&quot;
+   }
+-}]]></component>
+-  <component name="GithubPullRequestsUISettings"><![CDATA[{
+-  "selectedUrlAndAccountId": {
+-    "url": "https://github.com/dCartaArt02/POO_G01L_E04.git",
+-    "accountId": "e2bb6b7e-bbb1-403a-8ee7-fc300cad21f9"
++}</component>
++  <component name="GithubPullRequestsUISettings">{
++  &quot;selectedUrlAndAccountId&quot;: {
++    &quot;url&quot;: &quot;https://github.com/dCartaArt02/POO_G01L_E04.git&quot;,
++    &quot;accountId&quot;: &quot;e2bb6b7e-bbb1-403a-8ee7-fc300cad21f9&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="ProjectColorInfo">{
+   &quot;associatedIndex&quot;: 1
+ }</component>
+@@ -64,8 +53,9 @@
+     "Application.RadioButton.executor": "Run",
+     "RunOnceActivity.ShowReadmeOnStart": "true",
+     "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH": "222",
+-    "git-widget-placeholder": "Ca241136__Guia__4",
+-    "kotlin-language-version-configured": "true"
++    "git-widget-placeholder": "main",
++    "kotlin-language-version-configured": "true",
++    "last_opened_file_path": "/home/cartagena/IdeaProjects/Ejercicio 3"
+   }
+ }]]></component>
+   <component name="RecentsManager">
