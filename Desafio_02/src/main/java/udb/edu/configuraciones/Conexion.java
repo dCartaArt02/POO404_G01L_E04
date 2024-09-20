@@ -1,3 +1,5 @@
+package udb.edu.configuraciones;
+
 import java.sql.*;
 
 
