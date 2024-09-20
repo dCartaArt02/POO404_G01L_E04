@@ -1,19 +1,26 @@
 import java.sql.*;
 
+
 public class Conexion {
-    public class ConexionBaseDatos {
-        private static final String URL = "jdbc:mysql://localhost:3306/";
-        private static final String USER = "root";
-        private static final String PASSWORD = "Carta.345617";
-        private static final String DRIVER = "com.mysql.jdbc.Driver";
-        private static final String DB_NAME = "rapigo";
 
-        public static Connection getConnection() throws SQLException {
-            return DriverManager.getConnection(URL, USER, PASSWORD);
+    private String driver = "com.mysql.cj.jdbc.Driver";
+    private String url = "jdbc:mysql://localhost:3306/rapigo";
+    private String usuario = "root";
+    private String password = "Carta.345617";
 
+    public static void main(String[]args)
+    {
+        Conexion a = new Conexion();
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+           Connection cx = DriverManager.getConnection(a.url, a.usuario, a.password);
+            System.out.println("Conexión Exitosa");
+
+        }catch(SQLException | ClassNotFoundException ex){
+            System.out.println("Error al abrir Conexión: " + ex.getMessage());
         }
     }
-    public static void main(String[] args) {
-        
-    }
 }
+
+
+
