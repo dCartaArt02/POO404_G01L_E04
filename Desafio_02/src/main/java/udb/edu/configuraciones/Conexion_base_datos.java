@@ -3,7 +3,7 @@ package udb.edu.configuraciones;
 import java.sql.*;
 
 
-public class Conexion {
+public class Conexion_base_datos {
 
     private String driver = "com.mysql.jdbc.Driver";
     private String url = "jdbc:mysql://localhost:3306/rapigo";
@@ -12,7 +12,7 @@ public class Conexion {
 
     public static void main(String[]args)
     {
-        Conexion a = new Conexion();
+        Conexion_base_datos a = new Conexion_base_datos();
         try{
             Class.forName("com.mysql.jdbc.Driver");
            Connection cx = DriverManager.getConnection(a.url ,a.usuario, a.password);
