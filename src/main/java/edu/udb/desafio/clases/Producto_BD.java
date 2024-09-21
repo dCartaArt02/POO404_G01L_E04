@@ -28,7 +28,6 @@ public class Producto_BD {
                 P.setStock(rs.getInt("5"));
                 P.setFoto(rs.getBinaryStream("6"));
                 menus.add(P);
-
              }
          } catch (Exception e) {
 
