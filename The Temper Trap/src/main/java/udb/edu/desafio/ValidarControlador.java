@@ -14,13 +14,6 @@ public class ValidarControlador extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String nombre = request.getParameter("txtnombre");
-        String contraseña = request.getParameter("txtpassword");
-
-
         if (empleadoDao != null) {
             HttpSession session = request.getSession();
             session.setAttribute("usuario", empleadoDao);
@@ -28,7 +21,15 @@ public class ValidarControlador extends HttpServlet {
         } else {
             request.setAttribute("error", "Nombre de usuario o contraseña incorrectos.");
             request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String nombre = request.getParameter("txtnombre");
+        String contraseña = request.getParameter("txtpassword");
+
+
 
         }
     }
-}
+

@@ -2,12 +2,12 @@ package modelo;
 import java.sql.*;
 
 public class Conexion_db {
-    String driver = "com.mysql.cj.jdbc.Driver";  // Asegúrate de que este sea el nombre del driver correcto
+    String driver = "com.mysql.cj.jdbc.Driver";
 
     public Connection Conectar() {
-        String url = "jdbc:mysql://localhost:3306/rapigo?useSSL=false&serverTimezone=UTC";  // URL de la base de datos
+        String url = "jdbc:mysql://localhost:3306/rapigo";
         String user = "root";
-        String pass = "Carta.345617";
+        String pass = "345617";
         Connection conectar = null;
 
         try {
