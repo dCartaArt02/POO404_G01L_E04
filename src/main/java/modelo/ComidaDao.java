@@ -13,7 +13,7 @@ public class ComidaDao {
     Conexion_db Cx = new Conexion_db();
     PreparedStatement stmt;
     ResultSet rs;
-    public List lista ()
+    public List<Producto_comida> lista ()
     {
         List<Producto_comida>producto_comidas = new ArrayList<Producto_comida>();
         String sql = "select * from menu";
@@ -25,13 +25,12 @@ public class ComidaDao {
             while (rs.next())
             {
                 Producto_comida p = new Producto_comida();
-                p.setId(rs.getInt("1"));
-                p.setNombre(rs.getString("2"));
-                p.setDescripcion(rs.getString("3"));
-                p.setPrecio(rs.getFloat("4"));
+                p.setId(rs.getInt("ProductoID"));
+                p.setNombre(rs.getString("NombreProducto"));
+                p.setDescripcion(rs.getString("Descripcion"));
+                p.setPrecio(rs.getFloat("Precio"));
                 producto_comidas.add(p);
             }
-
         }catch (SQLException e)
         {
 
@@ -44,7 +43,15 @@ public class ComidaDao {
                 e.printStackTrace();
             }
         }
+        System.out.println("Productos encontrados: " + producto_comidas.size()); // Debug
         return producto_comidas;
+
+    }
+    public static void main(String[]args)
+    {
+        ComidaDao dao = new ComidaDao();
+        dao.lista();
+        System.out.println(dao.lista());
     }
 
 }

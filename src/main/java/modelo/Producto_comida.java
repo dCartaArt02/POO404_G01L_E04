@@ -1,26 +1,30 @@
 package modelo;
 
-import java.io.InputStream;
-
 public class Producto_comida {
-    int id;
+    private int id;
+    private String nombre;
+    private String descripcion;
+    private double precio;
+    private int stock;
 
-    public Producto_comida() {
+    // Constructor
+    public Producto_comida(int id, String nombre, String descripcion, double precio, int stock) {
         this.id = id;
         this.nombre = nombre;
-        this.precio = precio;
         this.descripcion = descripcion;
+        this.precio = precio;
         this.stock = stock;
-
+    }
+    // Constructor por defecto
+    public Producto_comida() {
+        this.id = 0;
+        this.nombre = "";
+        this.descripcion = "";
+        this.precio = 0.0;
+        this.stock = 0;
     }
 
-    String nombre;
-    String descripcion;
-
-
-    double precio;
-
-
+    // Getters y Setters
     public int getId() {
         return id;
     }
@@ -61,5 +65,14 @@ public class Producto_comida {
         this.stock = stock;
     }
 
-    int stock;
+    @Override
+    public String toString() {
+        return "Producto_comida{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", precio=" + precio +
+                ", stock=" + stock +
+                '}';
+    }
 }
