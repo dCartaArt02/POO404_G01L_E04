@@ -7,7 +7,7 @@ public class Conexion_db {
     public Connection Conectar() {
         String url = "jdbc:mysql://localhost:3306/rapigo?useSSL=false&serverTimezone=UTC";  // URL de la base de datos
         String user = "root";
-        String pass = "ortiz.1196$$";
+        String pass = "Carta.345617";
         Connection conectar = null;
 
         try {

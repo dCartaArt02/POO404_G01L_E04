@@ -15,7 +15,7 @@ public class Producto_comida {
         this.precio = precio;
         this.stock = stock;
     }
-    // Constructor por defecto
+
     public Producto_comida() {
         this.id = 0;
         this.nombre = "";

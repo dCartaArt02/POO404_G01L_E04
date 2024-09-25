@@ -12,11 +12,19 @@ import modelo.Producto_comida;
 public class ControladorBasedatos extends HttpServlet {
     ComidaDao comidaDao = new ComidaDao();
     List <Producto_comida> Producto = new ArrayList<Producto_comida>();
+    String accion;
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ComidaDao comidaDao = new ComidaDao();
         List<Producto_comida> productos = comidaDao.lista();
         request.setAttribute("productos", productos);
         request.getRequestDispatcher("index.jsp").forward(request, response);
+        switch (accion)
+        {
+            case "p":
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+                break;
+
+        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

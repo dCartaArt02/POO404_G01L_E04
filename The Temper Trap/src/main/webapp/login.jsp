@@ -13,10 +13,21 @@
     <title>Title</title>
 </head>
 <body>
-<%
 
+<% String error = (String) request.getAttribute("error"); %>
+<% if (error != null) { %>
+<div style="color: red;"><%= error %></div>
+<% } %>
+<form action="login" method="post">
+    <input type="hidden" name="accion" value="ingresar">
 
-%>
+    <input type="text" name="txtnombre" required>
+    <br>
+
+    <input type="password" name="txtpassword" required>
+    <br>
+    <button type="submit">Ingresar</button>
+</form>
 <h1>AAAAAAAAAAAAAAAAAAAAA</h1>
 </body>
 </html>
