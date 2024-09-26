@@ -12,7 +12,7 @@
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
-    <title>JSP - Hello World</title>
+    <title>Menu</title>
 </head>
 <div class="container">
 
@@ -54,6 +54,7 @@
                     <h5 class="card-title"><%= producto.getNombre() %></h5>
                     <p class="card-text">Descripción: <%= producto.getDescripcion() %></p>
                     <p class="card-text">Precio: $<%= producto.getPrecio() %></p>
+                    <input type="submit" class="btn btn-outline-primary">
                 </div>
             </div>
         </div>
