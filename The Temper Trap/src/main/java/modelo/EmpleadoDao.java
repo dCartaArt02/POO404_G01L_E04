@@ -9,25 +9,20 @@ public class EmpleadoDao {
     Connection cx;
     PreparedStatement stmt;
     ResultSet rs;
-    public Empleado validar(String nombre, String id) {
+    public boolean validar (String usuario, String contraseña) {
         Empleado Em = new Empleado();
-        String sql = "select * from empleado where Nombre = ? and EmpleadoID = ?";
+        String sql = "select * from empleado where User = ? and contraseña = ?";
         try{
             cx=con.Conectar();
             stmt=con.Conectar().prepareStatement(sql);
-            stmt.setString(2,nombre);
-            stmt.setString(1,id);
+            stmt.setString(1, usuario );
+            stmt.setString(2,contraseña);
             rs=stmt.executeQuery();
-            while(rs.next()){
-                Em.setId(rs.getInt("EmpleadoID"));
-                Em.setNombre(rs.getString("Nombre"));
-                Em.setCorreo(rs.getString("Correo"));
-                Em.setPuesto(rs.getString("Cargo"));
+            return rs.next();
 
-            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return Em;
+        
     }
 }
