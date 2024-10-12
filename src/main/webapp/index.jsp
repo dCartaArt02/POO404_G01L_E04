@@ -10,5 +10,6 @@
 <br/>
 <a href="hello-servlet">Hello Servlet</a>
 <a href="Bean1.jsp">a</a>
+<a href="lenguajefavorito.jsp">ee</a>
 </body>
 </html>
